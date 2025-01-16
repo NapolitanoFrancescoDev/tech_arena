@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\AddCouponRequest;
+use App\Http\Requests\UpdateCouponRequest;
 
 class CouponController extends Controller
 {
@@ -13,7 +15,10 @@ class CouponController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.coupons.index')->with([
+            'coupons' => Coupon::latest()->get()
+
+        ]);
     }
 
     /**
@@ -21,15 +26,21 @@ class CouponController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.coupons.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AddCouponRequest $request)
     {
-        //
+        if($request->validated())
+        {
+            Coupon::create($request->validated());
+            return redirect()->route('admin.coupons.index')->with([
+                'success' => 'Coupon has been added seccessfully'
+            ]);
+        }
     }
 
     /**
@@ -37,7 +48,8 @@ class CouponController extends Controller
      */
     public function show(Coupon $coupon)
     {
-        //
+        abort(404);
+
     }
 
     /**
@@ -45,15 +57,23 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        //
+        return view('admin.coupons.edit')->with([
+            'coupon' => $coupon
+ ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Coupon $coupon)
+    public function update(UpdateCouponRequest $request, Coupon $coupon)
     {
-        //
+        if($request->validated())
+        {
+           $coupon->update($request->validated());
+            return redirect()->route('admin.coupons.index')->with([
+                'success' => 'Coupon has been updated seccessfully'
+            ]);
+        }
     }
 
     /**
@@ -61,6 +81,9 @@ class CouponController extends Controller
      */
     public function destroy(Coupon $coupon)
     {
-        //
+        $coupon->delete();
+        return redirect()->route('admin.coupons.index')->with([
+            'success' => 'Coupon has been deleted seccessfully'
+        ]);
     }
 }
