@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\ProductController;
 
 Route::get('/',[AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin/auth', [AdminController::class, 'auth'])->name('admin.auth');
@@ -41,6 +42,16 @@ Route::middleware('admin')->group(function(){
             'update' => 'admin.coupons.update',
             'destroy' => 'admin.coupons.destroy',
         ]);
+        //products routes
+        Route::resource('products', ProductController::class)->names([
+            'index' => 'admin.products.index',
+            'create' => 'admin.products.create',
+            'store' => 'admin.products.store',
+            'edit' => 'admin.products.edit',
+            'update' => 'admin.products.update',
+            'destroy' => 'admin.products.destroy',
+        ]);
+
 
     });
 

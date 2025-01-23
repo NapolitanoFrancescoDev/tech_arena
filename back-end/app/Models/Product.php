@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,7 +18,7 @@ class Product extends Model
     }
     public function sizes()
     {
-        return $this->belongsTo(Size::class);
+        return $this->belongsToMany(Size::class);
     }
     public function orders()
     {
